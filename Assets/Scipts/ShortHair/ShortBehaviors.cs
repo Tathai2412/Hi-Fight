@@ -1,13 +1,16 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class ShortBehaviors : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    public static int health = 100;
+    [SerializeField] private int health = 100;
 
-    public static bool shortAttacking;
+    public bool shortAttacking;
     private Animator shortHairAnim;
+
+    public event Action OnDead;
 
     void Start()
     {
@@ -18,6 +21,19 @@ public class ShortBehaviors : MonoBehaviour
     {
         Move();
         Attack();
+        CheckDead();
+    }
+
+    public int Health
+    {
+        get => health;
+        set => health = value;
+    }
+
+    public Animator ShortHairAnim
+    {
+        get => shortHairAnim;
+        set => shortHairAnim = value;
     }
 
     void Move()
@@ -49,30 +65,60 @@ public class ShortBehaviors : MonoBehaviour
 
     void Attack()
     {
-        shortHairAnim.SetBool("IsPunching", false);
-        shortHairAnim.SetBool("IsKicking", false);
-        shortHairAnim.SetBool("IsDamaged", false);
-        shortAttacking = false;
         if (Input.GetKeyDown(KeyCode.J))
         {
             shortHairAnim.SetBool("IsPunching", true);
-            shortAttacking = true;
+            CheckAttacking();
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
             shortHairAnim.SetBool("IsKicking", true);
-            shortAttacking = true;
+            CheckAttacking();
         }
     }
 
-    private void OnTriggerEnter2D (Collider2D col)
+    private IEnumerator Attacking()
     {
-        Debug.Log("Touched");
-        if (col.gameObject.tag.Equals("LongHair") && LongBehaviors.longAttacking)
+        yield return new WaitForSeconds(0.3f);
+        shortAttacking = false;
+        shortHairAnim.SetBool("IsPunching", false);
+        shortHairAnim.SetBool("IsKicking", false);
+    }
+
+    void CheckAttacking()
+    {
+        if (shortHairAnim.GetBool("IsPunching") || shortHairAnim.GetBool("IsKicking"))
         {
-            Debug.Log("Attacked");
-            health -= 10;
-            shortHairAnim.SetBool("IsDamaged", true);
+            shortAttacking = true;
+        }
+
+        StartCoroutine(Attacking());
+    }
+
+    private IEnumerator Damaged(LongBehaviors longBehaviors)
+    {
+        yield return new WaitForSeconds(0.2f);
+        longBehaviors.LongHairAnim.SetBool("IsDamaged", false);
+    }
+
+
+    void CheckDead()
+    {
+        if (health <= 0)
+        {
+            OnDead?.Invoke();
+        }
+    }
+
+    private void OnTriggerStay2D (Collider2D col)
+    {
+        LongBehaviors longBehaviors = col.gameObject.GetComponent<LongBehaviors>();
+
+        if (longBehaviors != null && shortAttacking)
+        {
+            //Debug.Log("Attacked");
+            longBehaviors.LongHairAnim.SetBool("IsDamaged", true);
+            StartCoroutine(Damaged(longBehaviors));
         }
     }
 }

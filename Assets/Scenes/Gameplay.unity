@@ -132,10 +132,10 @@ GameObject:
   m_Component:
   - component: {fileID: 287539245}
   - component: {fileID: 287539244}
+  - component: {fileID: 287539248}
   - component: {fileID: 287539243}
   - component: {fileID: 287539246}
   - component: {fileID: 287539247}
-  - component: {fileID: 287539248}
   m_Layer: 0
   m_Name: LongHair
   m_TagString: LongHair
@@ -316,6 +316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  health: 100
+  longAttacking: 0
 --- !u!1 &368334424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,6 +1482,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  health: 100
+  shortAttacking: 0
 --- !u!50 &1471856064
 Rigidbody2D:
   serializedVersion: 4
@@ -1699,8 +1703,8 @@ Transform:
   m_GameObject: {fileID: 1603096577}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -261.4422, y: -146.21, z: 0}
-  m_LocalScale: {x: 2.9051692, y: 1.8830048, z: 1}
+  m_LocalPosition: {x: 5.3644, y: 21.1401, z: 0}
+  m_LocalScale: {x: 123.04273, y: 59.11096, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1217538855}
