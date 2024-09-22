@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     public GameObject startScreen;
     public GameObject gameOverScreen;
     public GameObject maps;
-    [SerializeField] private LongBehaviors longHair;
-    [SerializeField] private ShortBehaviors shortHair;
+    [SerializeField] private DamageReceiver longHair;
+    [SerializeField] private DamageReceiver shortHair;
 
 
     private void Awake()
